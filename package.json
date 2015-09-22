@@ -4,21 +4,11 @@
   "description": "",
   "main": "dom.js",
   "scripts": {
-    "watch": "watchify app.js -o bundle.js",
-    "build": "browserify app.js -o bundle.js",
-    "br": "browser-sync start --server ./",
-    "i" : "npm run build; npm run br" 
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^11.0.0",
-    "watchify": "^3.3.0"
   },
   "dependencies": {
-    "global": "^4.3.0",
-    "regex-classname": "^1.0.0",
-    "regex-id": "^1.0.0",
-    "regex-trimmer": "^1.0.0"
   }
 }
