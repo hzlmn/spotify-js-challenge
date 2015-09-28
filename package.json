@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "dom.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.3.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
