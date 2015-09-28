@@ -10,7 +10,7 @@ var SpotifyTab = function () {
 	this._register();
 };
 
-/**\
+/**
  * @private
  * check if locasStorage api is supported
  * @return {[bool]}

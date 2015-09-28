@@ -8,3 +8,4 @@
 - current progress
  * communication-between-tabs
  * dom-wrapper
+ * mouse-issue
