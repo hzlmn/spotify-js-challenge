@@ -1,3 +1,7 @@
+/**
+ * @todo improve test cases
+ */
+
 var assert = require('chai').assert;
 var Spotify = require('./spotify-entities');
 

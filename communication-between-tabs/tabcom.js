@@ -1,19 +1,63 @@
 /**
  * @todo add storage engine fallback if localStorage not supported
  */
+
+var Spotify = Spotify || {};
+
+Spotify.Events = {
+
+	/**
+	* Crossbrowser add event
+	* @param  {DomElement} obj
+	* @param  {Event} evt
+	* @param  {Function} listener
+	* @return
+	*/
+	addEvent: function (obj, evt, listener) {
+		if (typeof addEventListener !== 'undefined') {
+			obj.addEventListener(evt, listener, false);
+		} else if (typeof attachEvent !== 'undefined') {
+			obj.attachEvent('on' + evt, listener);
+		} else {
+			obj.['on' + evt] = listener;
+		}
+		return listener;
+	};
+
+
+	/**
+	 * Remove event for older browser
+	 * @param  {DomElement} obj
+	 * @param  {Event} evt
+	 * @param  {Function} listener
+	 * @return
+	 */
+	removeEvent: function (obj, evt, listener) {
+		if (typeof removeEventListener !== 'undefined') {
+			obj.removeEventListener(evt, listener, false);
+		} else if (typeof detachEvent !== 'undefined') {
+			obj.detachEvent('on' + evt, listener);
+		} else {
+			obj.['on' + evt] = null;
+		}
+	};
+};
+
+
 /*
  * SpotifyTab constructor function
  */
-var SpotifyTab = function () {
+var SpotifyTab = function (config) {
+	config = config || {};
 	if (!this._checkLocalStorageSupport()) { throw new Error('You use old browser, dude!'); }
 	this._events = {};
-	this._register();
 };
+
 
 /**
  * @private
- * check if locasStorage api is supported
- * @return {[bool]}
+ * Check if locasStorage api is supported
+ * @return {Boolean}
  */
 SpotifyTab.prototype._checkLocalStorageSupport = function() {
 	try	{
@@ -23,38 +67,66 @@ SpotifyTab.prototype._checkLocalStorageSupport = function() {
 	}
 };
 
+
 /**
- * @private
- * event handler for storage event
- * @return {[type]}     [description]
+ * @public
+ * Event handler for storage event
+ * @return
  */
-SpotifyTab.prototype._register = function() {
+SpotifyTab.prototype.register = function() {
 	var self = this;
-	this._window.addEventListener('storage', function (e) {
+
+	var handler = function (e) {
 		var key = e.key;
 		if (key in self._events) {
 			self._events[key](e);
 		}
-	}, false);
+	};
+
+	this._regListener = Spotify.Events.addEvent(window, 'storage', handler);
 };
+
+
+/**
+ * @public
+ * Unregister storage evt listener
+ * @return
+ */
+Spotify.prototype.unregister = function () {
+	var listener = this._regListener;
+	if (listener && typeof listener === 'function') {
+		Spotify.Events.removeEvent(window, 'storage', listener);
+	}
+};
+
 
 /**
  * add message to storage engine
+ * @return
  */
 SpotifyTab.prototype.send = function(key, value) {
 	localStorage.setItem(key, value);
 };
 
+
 /**
  * subscribe to specific message
- * @param  {[string]}   evt [key value]
- * @param  {Function} cb  [callback]
- * @return {[null]}  
+ * @param  {String}   evt
+ * @param  {Function} cb
+ * @return
  */
-SpotifyTab.prototype.subscribe = function (key, cb) {
-	this._events[key] = function (e) {
-		cb(e);
-	};
+SpotifyTab.prototype.on = function (key, cb) {
+	this._events[key] = cb;
 };
 
-window.s = new SpotifyTab();
+
+/**
+ * @param  {String}
+ * @param  {Function}
+ * @return
+ */
+SpotifyTab.prototype.off = function (key, cb) {
+	delete this._events[key];
+};
+
+module.exports = SpotifyTab;
