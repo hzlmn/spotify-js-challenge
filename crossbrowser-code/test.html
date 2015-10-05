@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<script src="spotify-search.js"></script>
+	<script>
+		console.log(XMLHttpRequest);
+		SpotifySearch.album('foo', function (list) {
+			document.body.appendChild(list);
+		});
+	</script>
+</body>
+</html>

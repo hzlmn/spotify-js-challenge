@@ -18,8 +18,8 @@ var ClickableAreas = (function(namespace) {
 
 		this._areas = [];
 	};
-	
-	
+
+
 	ClickableAreas.prototype = {
 		_areas: null,
 
@@ -63,7 +63,7 @@ var ClickableAreas = (function(namespace) {
 			return evt;
 		},
 
-	
+
 		/**
 		 * Returns the local mouse coordinates.
 		 *
@@ -83,7 +83,7 @@ var ClickableAreas = (function(namespace) {
 		 * @private
 		 * @param evt {MouseEvent} Event passed by the JS engine.
 		 */
-		_click: function(evt) { 
+		_click: function(evt) {
 			var point = this._getMouseCoordinates(evt);
 			var areas = this._areas;
 			var length = areas.length;
@@ -120,7 +120,7 @@ var ClickableAreas = (function(namespace) {
 			       ((topLeft[1] <= y) && (y <= bottomRight[1]));
 		}
 	};
-	
-	
+
+
 	return ClickableAreas;
 })();
